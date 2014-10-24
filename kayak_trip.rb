@@ -3,7 +3,7 @@
 class Trip
   attr_accessor :num_legs, :flights
   
-  def initialize(num_legs)flights
+  def initialize(num_legs)
     @num_legs = num_legs
     @flights = []
     @num_legs.times do |i|
@@ -19,7 +19,9 @@ class Trip
       puts "Enter the # of flexible days after departure date for leg ##{i+1}"
       flex = gets.chomp.to_i
       
-      @flights << Flight.new(origin, dest, date, flex, (i+1))
+      leg_num = i + 1
+
+      @flights << Flight.new(origin, dest, date, flex, leg_num)
     end
     return permutations
   end
@@ -78,7 +80,7 @@ class Trip
     def initialize(origin, destination, date, flexibility, leg_number)
       @origin = origin
       @destination = destination
-      self.date = date
+      @date = date
       @flexibility = flexibility
       @date_range = create_range
       @leg_number = leg_number

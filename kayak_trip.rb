@@ -3,23 +3,25 @@
 class Trip
   attr_accessor :num_legs, :flights
   
-  def initialize(num_legs)flights
+  def initialize(num_legs)
     @num_legs = num_legs
     @flights = []
     @num_legs.times do |i|
-      puts "Enter the origin airport code for leg##{i+1}:"
+      puts "Enter the origin airport code for leg ##{i+1}:"
       origin = gets.chomp
       
-      puts "Enter the destination airport code for leg##{i+1}:"
+      puts "Enter the destination airport code for leg ##{i+1}:"
       dest = gets.chomp
       
-      puts "Enter the earliest departure date for for leg##{i+1}:"
+      puts "Enter the earliest departure date for for leg ##{i+1}:"
       date = gets.chomp
       
-      puts "Enter the # of flexible days after departure date for leg ##{i+1}"
+      puts "Enter the # of flexible days after departure date for leg ##{i+1}:"
       flex = gets.chomp.to_i
       
-      @flights << Flight.new(origin, dest, date, flex, (i+1))
+      leg_num = i + 1
+      
+      @flights << Flight.new(origin, dest, date, flex, leg_num)
     end
     return permutations
   end
@@ -71,21 +73,21 @@ class Trip
     end
     
     def flexibility=(val)
-      @flexibility = val
+      @flexibility = val.to_i
       @date_range = create_range  # updates date_range if flex changed
     end
     
-    def initialize(origin, destination, date, flexibility, leg_number)
+    def initialize(origin, destination, date, flex, leg_num)
       @origin = origin
       @destination = destination
-      self.date = date
-      @flexibility = flexibility
-      @date_range = create_range
-      @leg_number = leg_number
+      @date = date
+      @flexibility = flex
+      @leg_number = leg_num
     end
     
     def create_range
       range = [@date]
+      puts @flexibility
       @flexibility.times do |i|
         range << @date + ( i + 1 )
       end

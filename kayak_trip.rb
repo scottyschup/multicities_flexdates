@@ -19,6 +19,14 @@ class Trip
       puts "Enter the # of flexible days after departure date for leg ##{i+1}:"
       flex = gets.chomp.to_i
       
+      puts 'Check nearby airports as well (y/n)?'
+      nearby = gets.chomp
+      
+      if nearby == 'y' || nearby == 'Y'
+        origin += ",nearby"
+        dest += ",nearby"
+      end
+      
       leg_num = i + 1
       
       @flights << Flight.new(origin, dest, date, flex, leg_num)
@@ -45,23 +53,28 @@ class Trip
   
   
   class Flight
-    attr_accessor :origin, :destination, :leg_number
+    attr_accessor :origin, :destination, :leg_number, :date_range
       
     def date
       @date
     end
     
     def date=(val)
+      @date = convert_to_date val
+      @date_range = create_range  # updates date_range if date changed
+    end
+    
+    def convert_to_date date
       # date should be a Date object 
       #    or a string with year, month, and day delineated by '-'
       #    e.g. '2014-10-23'
-      if val.class == Date
-        @date = val
+      if date.class == Date
+        @date = date
       else
-        d = val.split('-').map! { |str| str.to_i }
+        d = date.split('-').map! { |str| str.to_i }
         @date = Date.new(d[0], d[1], d[2])
       end
-      @date_range = create_range  # updates date_range if date changed
+      
     end
     
     def date_range
@@ -80,26 +93,28 @@ class Trip
     def initialize(origin, destination, date, flex, leg_num)
       @origin = origin
       @destination = destination
-      @date = date
+      convert_to_date date
       @flexibility = flex
+      @date_range = create_range
       @leg_number = leg_num
+      puts "#{@origin} #{@destination} #{@date.to_s} #{@flexibility}"
     end
     
     def create_range
       range = [@date]
-      puts @flexibility
       @flexibility.times do |i|
         range << @date + ( i + 1 )
       end
-      range
+      return range
     end
     
     def url_segments
+      @date_range = create_range
       url_segments = []
       @date_range.each do |date|
         url_segments << "/#{@origin}-#{@destination}/#{date.to_s}"
       end
-      url_segments
+      return url_segments
     end
     
   end  # of Flight class

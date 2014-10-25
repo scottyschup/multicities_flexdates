@@ -19,6 +19,7 @@ class Trip
       puts "Enter the # of flexible days after departure date for leg ##{i+1}:"
       flex = gets.chomp.to_i
       
+<<<<<<< HEAD
       puts 'Check nearby airports as well (y/n)?'
       nearby = gets.chomp
       
@@ -29,6 +30,10 @@ class Trip
       
       leg_num = i + 1
       
+=======
+      leg_num = i + 1
+
+>>>>>>> b0a6a0e09788b6a8c33c2a8b3a63bc705c83b34d
       @flights << Flight.new(origin, dest, date, flex, leg_num)
     end
     return permutations
@@ -69,10 +74,10 @@ class Trip
       #    or a string with year, month, and day delineated by '-'
       #    e.g. '2014-10-23'
       if date.class == Date
-        @date = date
+        return date
       else
         d = date.split('-').map! { |str| str.to_i }
-        @date = Date.new(d[0], d[1], d[2])
+        return Date.new(d[0], d[1], d[2])
       end
       
     end
@@ -93,7 +98,7 @@ class Trip
     def initialize(origin, destination, date, flex, leg_num)
       @origin = origin
       @destination = destination
-      convert_to_date date
+      @date = convert_to_date(date)
       @flexibility = flex
       @date_range = create_range
       @leg_number = leg_num

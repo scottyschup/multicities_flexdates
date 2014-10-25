@@ -19,7 +19,6 @@ class Trip
       puts "Enter the # of flexible days after departure date for leg ##{i+1}:"
       flex = gets.chomp.to_i
       
-<<<<<<< HEAD
       puts 'Check nearby airports as well (y/n)?'
       nearby = gets.chomp
       
@@ -30,10 +29,6 @@ class Trip
       
       leg_num = i + 1
       
-=======
-      leg_num = i + 1
-
->>>>>>> b0a6a0e09788b6a8c33c2a8b3a63bc705c83b34d
       @flights << Flight.new(origin, dest, date, flex, leg_num)
     end
     return permutations
